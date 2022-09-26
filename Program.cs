@@ -1,8 +1,9 @@
-﻿Event pastEvent = new Event();
+﻿using System.Runtime.CompilerServices;
+
+Event pastEvent = new Event();
 Event testEvent = new Event("test evento", "26-9-2022 12:00", 50);
 
 testEvent.ReserveSeats(48);
-
 
 try
 {
@@ -23,129 +24,53 @@ try
 testEvent.UnreserveSeats(48);
 
 Console.WriteLine(testEvent.ToString());
-public class Event
+
+Console.WriteLine();
+
+Console.Write("Inserisci il titolo dell'evento -> ");
+string title = Console.ReadLine();
+
+Console.Write("Inserisci la data e l'ora dell'evento (gg/mm/aaaa hh:mm) -> ");
+string date = Console.ReadLine();
+
+Console.Write("Inserisci il numero di posti totali -> ");
+int maxCapacity = Convert.ToInt32(Console.ReadLine());
+
+Event newEvent = new Event(title, date, maxCapacity);
+
+Console.Write("Quanti posti desideri prenotare? -> ");
+int reservedSeats = Convert.ToInt32(Console.ReadLine());
+newEvent.ReserveSeats(reservedSeats);
+
+Console.WriteLine();
+
+Console.WriteLine($"Numero di posti prenotati -> {newEvent.ReservedSeats}");
+Console.WriteLine($"Numero di posti disponibili -> {newEvent.GetAvailableSeats()}");
+
+string answer;
+
+do
 {
-    protected string title;
-    protected DateTime date;
-    protected int maxCapacity;
-    public int ReservedSeats { get; private set; }
+    Console.WriteLine();
 
-    public Event()
+    Console.Write("Vuoi disdire dei posti (si/no)? -> ");
+    answer = Console.ReadLine().Trim().ToLower();
+    if (answer.Contains("si"))
     {
-        this.title = "evento passato";
-        this.date = DateTime.Parse("22-09-2022 15:00");
-        this.maxCapacity = 30;
-        this.ReservedSeats = 0;
+        Console.Write("Ok, inserisci il numero di posti che intendi disdire -> ");
+        int seatsToUnreserve = Convert.ToInt32(Console.ReadLine());
+        newEvent.UnreserveSeats(seatsToUnreserve);
+    }
+    else
+    {
+        Console.WriteLine();
+        Console.WriteLine("Ok, ecco un riepilogo dei posti disponibili e dei posti attualmente occupati");
     }
 
-    public Event(string _title, string _date, int _maxCapacity)
-    {
-        this.Title = _title;
-        this.Date = DateTime.Parse(_date);
-        this.MaxCapacity = _maxCapacity;
-        this.ReservedSeats = 0;
-    }
+    Console.WriteLine();
 
-    public string Title
-    {
-        get
-        {
-            return this.title;
-        }
-        set
-        {
-            if (value.Trim().Length != 0)
-            {
-                this.title = value.Trim();
-            }
-            else
-            {
-                throw new Exception("Non è possibile salvare un evento senza titolo");
-            }
-        }
-    }
+    Console.WriteLine($"Numero di posti prenotati -> {newEvent.ReservedSeats}");
+    Console.WriteLine($"Numero di posti disponibili -> {newEvent.GetAvailableSeats()}");
 
-    public DateTime Date
-    {
-        get
-        {
-            return this.date;
-        }
-        set
-        {
-            DateTime currentData = DateTime.Now;
-            DateTime eventData = value;
-            int result = DateTime.Compare(eventData, currentData);
-            if (result >= 0)
-            {
-                this.date = value;
-            }
-            else
-            {
-                throw new Exception("Data inserita non valida");
-            }
-        }
-    }
-
-    public int MaxCapacity
-    {
-        get
-        {
-            return this.maxCapacity;
-        }
-        private set
-        {
-            if (value > 0)
-            {
-                this.maxCapacity = value;
-            }
-            else
-            {
-                throw new Exception("La capacità massima non può essere negativa o uguale a zero");
-            }
-        }
-    }
-
-    public void ReserveSeats(int seats)
-    {
-        DateTime currentData = DateTime.Now;
-        DateTime eventData = this.Date;
-        int result = DateTime.Compare(eventData, currentData);
-        if (result < 0)
-        {
-            throw new Exception($"L'evento si è già tenuto in data {DateOnly.FromDateTime(this.Date)} alle ore {TimeOnly.FromDateTime(this.Date)}");
-        }
-        else if(this.MaxCapacity - this.ReservedSeats - seats >= 0)
-        {
-            this.ReservedSeats += seats;
-        } else
-        {
-            throw new Exception("Non posso prenotare il numero di posti inserito perchè supererebbe la capacità massima");
-        }
-    }
-
-    public void UnreserveSeats(int seats)
-    {
-        DateTime currentData = DateTime.Now;
-        DateTime eventData = this.Date;
-        int result = DateTime.Compare(eventData, currentData);
-        if (result < 0)
-        {
-            throw new Exception($"L'evento si è già tenuto in data {DateOnly.FromDateTime(this.Date)} alle ore {TimeOnly.FromDateTime(this.Date)}");
-        }
-        else if (this.ReservedSeats - seats >= 0)
-        {
-            this.ReservedSeats -= seats;
-        }
-        else
-        {
-            throw new Exception("I posti attualmente occupati sono inferiori al numero di prenotazioni che si intende disdire");
-        }
-    }
-
-    public override string ToString()
-    {
-        return $"{this.Date.ToString("dd/MM/yyyy")} - {this.Title}";
-    }
-
-}
+    Console.WriteLine();
+} while (answer.Contains("si"));
