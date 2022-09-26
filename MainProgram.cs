@@ -157,6 +157,7 @@
         EventsProgram.PrintEventsBy(filteredEvents);
         Console.WriteLine();
         Console.WriteLine("Prova ad inserire anche una conferenza");
+        //newEventsProgram.ResetEventsList();
         Conference newConf = null;
         while(newConf == null)
         {
