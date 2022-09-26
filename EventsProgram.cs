@@ -4,11 +4,11 @@
 
     private List<Event> eventsList;
 
-    public EventsProgram(string title)
+    public EventsProgram(string _title)
     {
-        if(title.Trim().Length != 0)
+        if(_title.Trim().Length != 0)
         {
-            this.title = title;
+            this.title = _title;
         } else
         {
             throw new Exception("Non puoi salvare un programma di eventi senza titolo");
