@@ -6,13 +6,7 @@
 
     public EventsProgram(string _title)
     {
-        if(_title.Trim().Length != 0)
-        {
-            this.title = _title;
-        } else
-        {
-            throw new Exception("Non puoi salvare un programma di eventi senza titolo");
-        }
+        this.Title = _title;
         this.eventsList = new List<Event>();
     }
 
