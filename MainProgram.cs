@@ -196,7 +196,6 @@
             }
             catch (Exception e)
             {
-                newEvent = null;
                 Console.WriteLine(e.Message);
             }
         }
