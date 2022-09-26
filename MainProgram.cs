@@ -79,7 +79,14 @@
         } while (newEventsProgram == null);
 
         Console.Write("Quanti eventi vuoi inserire? -> ");
-        int listLength = Convert.ToInt32(Console.ReadLine());
+        int listLength = 0;
+        try
+        {
+            listLength = Convert.ToInt32(Console.ReadLine());
+        } catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
 
         while(newEventsProgram.CountEvents() < listLength)
         {
@@ -94,7 +101,14 @@
             string date = Console.ReadLine();
 
             Console.Write("Inserisci il numero di posti totali -> ");
-            int maxCapacity = Convert.ToInt32(Console.ReadLine());
+            int maxCapacity = -1;
+            try
+            {
+                maxCapacity = Convert.ToInt32(Console.ReadLine());
+            } catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             try
             {
@@ -107,8 +121,21 @@
             if (newEvent != null) 
             {
                 Console.Write("Quanti posti desideri prenotare? -> ");
-                int reservedSeats = Convert.ToInt32(Console.ReadLine());
-                newEvent.ReserveSeats(reservedSeats);
+                int reservedSeats = -1;
+                try
+                {
+                    reservedSeats = Convert.ToInt32(Console.ReadLine());
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                try
+                {
+                    newEvent.ReserveSeats(reservedSeats);
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
 
                 Console.WriteLine();
 
@@ -126,8 +153,21 @@
                     if (answer.Contains("si"))
                     {
                         Console.Write("Ok, inserisci il numero di posti che intendi disdire -> ");
-                        int seatsToUnreserve = Convert.ToInt32(Console.ReadLine());
-                        newEvent.UnreserveSeats(seatsToUnreserve);
+                        int seatsToUnreserve = -1;
+                        try
+                        {
+                            seatsToUnreserve = Convert.ToInt32(Console.ReadLine());
+                        } catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        try
+                        {
+                            newEvent.UnreserveSeats(seatsToUnreserve);
+                        } catch(Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                     }
                     else
                     {
@@ -152,10 +192,19 @@
         newEventsProgram.PrintThisEventsList();
         Console.Write("Inserisci una data per sapere quali eventi ci saranno -> ");
         string thisDate = Console.ReadLine();
-        List<Event> filteredEvents = newEventsProgram.GetEventsByDate(thisDate);
-        Console.WriteLine();
-        EventsProgram.PrintEventsBy(filteredEvents);
-        Console.WriteLine();
+        List<Event> filteredEvents = new List<Event>();
+        try
+        {
+            filteredEvents = newEventsProgram.GetEventsByDate(thisDate);
+            Console.WriteLine();
+            EventsProgram.PrintEventsBy(filteredEvents);
+            Console.WriteLine();
+        } catch (Exception e)
+        {
+            Console.WriteLine();
+            Console.WriteLine(e.Message);
+            Console.WriteLine();
+        }
         Console.WriteLine("Prova ad inserire anche una conferenza");
         //newEventsProgram.ResetEventsList();
         Conference newConf = null;
@@ -173,10 +222,25 @@
             string speaker = Console.ReadLine();
 
             Console.Write("Inserisci il prezzo del biglietto -> ");
-            double price = Convert.ToDouble(Console.ReadLine());
+            double price = -1;
+            try
+            {
+                price = Convert.ToDouble(Console.ReadLine());
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             Console.Write("Inserisci il numero di posti totali -> ");
-            int maxCapacity = Convert.ToInt32(Console.ReadLine());
+            int maxCapacity = -1;
+            try
+            {
+                maxCapacity = Convert.ToInt32(Console.ReadLine());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             try
             {
@@ -187,8 +251,22 @@
             }
         }
         Console.Write("Quanti posti desideri prenotare? -> ");
-        int confReservedSeats = Convert.ToInt32(Console.ReadLine());
-        newConf.ReserveSeats(confReservedSeats);
+        int confReservedSeats = -1;
+        try
+        {
+            confReservedSeats = Convert.ToInt32(Console.ReadLine());
+        } catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        try
+        {
+            newConf.ReserveSeats(confReservedSeats);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
 
         Console.WriteLine();
 
@@ -206,8 +284,21 @@
             if (anotherAnswer.Contains("si"))
             {
                 Console.Write("Ok, inserisci il numero di posti che intendi disdire -> ");
-                int seatsToUnreserve = Convert.ToInt32(Console.ReadLine());
-                newConf.UnreserveSeats(seatsToUnreserve);
+                int seatsToUnreserve = -1;
+                try
+                {
+                    seatsToUnreserve = Convert.ToInt32(Console.ReadLine());
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                try
+                {
+                    newConf.UnreserveSeats(seatsToUnreserve);
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
             else
             {

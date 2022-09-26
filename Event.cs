@@ -83,38 +83,51 @@
 
     public void ReserveSeats(int seats)
     {
-        DateTime currentData = DateTime.Now;
-        DateTime eventData = this.Date;
-        int result = DateTime.Compare(eventData, currentData);
-        if (result < 0)
+        if (seats >= 0)
         {
-            throw new Exception($"L'evento si è già tenuto in data {DateOnly.FromDateTime(this.Date)} alle ore {TimeOnly.FromDateTime(this.Date)}");
-        }
-        else if(this.MaxCapacity - this.ReservedSeats - seats >= 0)
-        {
-            this.ReservedSeats += seats;
+            DateTime currentData = DateTime.Now;
+            DateTime eventData = this.Date;
+            int result = DateTime.Compare(eventData, currentData);
+            if (result < 0)
+            {
+                throw new Exception($"L'evento si è già tenuto in data {DateOnly.FromDateTime(this.Date)} alle ore {TimeOnly.FromDateTime(this.Date)}");
+            }
+            else if (this.MaxCapacity - this.ReservedSeats - seats >= 0)
+            {
+                this.ReservedSeats += seats;
+            }
+            else
+            {
+                throw new Exception("Non posso prenotare il numero di posti inserito perchè supererebbe la capacità massima");
+            }
         } else
         {
-            throw new Exception("Non posso prenotare il numero di posti inserito perchè supererebbe la capacità massima");
+            throw new Exception("Il numero di posti da prenotare non è valido");
         }
     }
 
     public void UnreserveSeats(int seats)
     {
-        DateTime currentData = DateTime.Now;
-        DateTime eventData = this.Date;
-        int result = DateTime.Compare(eventData, currentData);
-        if (result < 0)
+        if (seats >= 0)
         {
-            throw new Exception($"L'evento si è già tenuto in data {DateOnly.FromDateTime(this.Date)} alle ore {TimeOnly.FromDateTime(this.Date)}");
-        }
-        else if (this.ReservedSeats - seats >= 0)
+            DateTime currentData = DateTime.Now;
+            DateTime eventData = this.Date;
+            int result = DateTime.Compare(eventData, currentData);
+            if (result < 0)
+            {
+                throw new Exception($"L'evento si è già tenuto in data {DateOnly.FromDateTime(this.Date)} alle ore {TimeOnly.FromDateTime(this.Date)}");
+            }
+            else if (this.ReservedSeats - seats >= 0)
+            {
+                this.ReservedSeats -= seats;
+            }
+            else
+            {
+                throw new Exception("I posti attualmente occupati sono inferiori al numero di prenotazioni che si intende disdire");
+            }
+        } else
         {
-            this.ReservedSeats -= seats;
-        }
-        else
-        {
-            throw new Exception("I posti attualmente occupati sono inferiori al numero di prenotazioni che si intende disdire");
+            throw new Exception("Il numero di posti da disdire non è valido");
         }
     }
 
