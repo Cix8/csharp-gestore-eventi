@@ -1,8 +1,8 @@
 ﻿public class Event
 {
-    protected string title;
-    protected DateTime date;
-    protected int maxCapacity;
+    private string title;
+    private DateTime date;
+    private int maxCapacity;
     public int ReservedSeats { get; private set; }
 
     public Event()

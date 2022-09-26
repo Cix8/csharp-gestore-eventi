@@ -1,12 +1,18 @@
 ﻿public class EventsProgram
 {
-    protected string title;
+    private string title;
 
-    protected List<Event> eventsList;
+    private List<Event> eventsList;
 
     public EventsProgram(string title)
     {
-        this.title = title;
+        if(title.Trim().Length != 0)
+        {
+            this.title = title;
+        } else
+        {
+            throw new Exception("Non puoi salvare un programma di eventi senza titolo");
+        }
         this.eventsList = new List<Event>();
     }
 
