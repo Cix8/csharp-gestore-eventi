@@ -90,98 +90,13 @@
 
         while(newEventsProgram.CountEvents() < listLength)
         {
-            Event newEvent = null;
-
-            Console.WriteLine();
-
-            Console.Write("Inserisci il titolo dell'evento -> ");
-            string title = Console.ReadLine();
-
-            Console.Write("Inserisci la data e l'ora dell'evento (gg/mm/aaaa hh:mm) -> ");
-            string date = Console.ReadLine();
-
-            Console.Write("Inserisci il numero di posti totali -> ");
-            int maxCapacity = -1;
-            try
-            {
-                maxCapacity = Convert.ToInt32(Console.ReadLine());
-            } catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            try
-            {
-                newEvent = new Event(title, date, maxCapacity);
-            } catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            Event newEvent = MainProgram.Builder();
 
             if (newEvent != null) 
             {
-                Console.Write("Quanti posti desideri prenotare? -> ");
-                int reservedSeats = -1;
-                try
-                {
-                    reservedSeats = Convert.ToInt32(Console.ReadLine());
-                } catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                try
-                {
-                    newEvent.ReserveSeats(reservedSeats);
-                } catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                MainProgram.SeatsReserver(newEvent);
 
-                Console.WriteLine();
-
-                Console.WriteLine($"Numero di posti prenotati -> {newEvent.ReservedSeats}");
-                Console.WriteLine($"Numero di posti disponibili -> {newEvent.GetAvailableSeats()}");
-
-                string answer;
-
-                do
-                {
-                    Console.WriteLine();
-
-                    Console.Write("Vuoi disdire dei posti (si/no)? -> ");
-                    answer = Console.ReadLine().Trim().ToLower();
-                    if (answer.Contains("si"))
-                    {
-                        Console.Write("Ok, inserisci il numero di posti che intendi disdire -> ");
-                        int seatsToUnreserve = -1;
-                        try
-                        {
-                            seatsToUnreserve = Convert.ToInt32(Console.ReadLine());
-                        } catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                        }
-                        try
-                        {
-                            newEvent.UnreserveSeats(seatsToUnreserve);
-                        } catch(Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine($"Ok, ecco un riepilogo dei posti disponibili e dei posti attualmente occupati per {newEvent.Title}");
-                    }
-
-                    Console.WriteLine();
-
-                    Console.WriteLine($"Numero di posti prenotati -> {newEvent.ReservedSeats}");
-                    Console.WriteLine($"Numero di posti disponibili -> {newEvent.GetAvailableSeats()}");
-
-                    Console.WriteLine();
-                } while (answer.Contains("si"));
+                MainProgram.SeatsUnreserver(newEvent);
 
                 newEventsProgram.AddNewEvent(newEvent);
             }
@@ -207,61 +122,102 @@
         }
         Console.WriteLine("Prova ad inserire anche una conferenza");
         //newEventsProgram.ResetEventsList();
-        Conference newConf = null;
+        Conference newConf = (Conference)MainProgram.Builder("conference");
         while(newConf == null)
         {
-            Console.WriteLine();
+            newConf = (Conference)MainProgram.Builder("conference");
+        }
 
-            Console.Write("Inserisci il titolo della conferenza -> ");
-            string title = Console.ReadLine();
+        MainProgram.SeatsReserver(newConf);
 
-            Console.Write("Inserisci la data e l'ora della conferenza (gg/mm/aaaa hh:mm) -> ");
-            string date = Console.ReadLine();
+        MainProgram.SeatsUnreserver(newConf);
 
+        newEventsProgram.AddNewEvent(newConf);
+        newEventsProgram.PrintThisEventsList();
+    }
+
+    public static Event Builder(string type = "event")
+    {
+        Event newEvent = null;
+
+        Console.WriteLine();
+
+        Console.Write("Inserisci il titolo dell'evento -> ");
+        string title = Console.ReadLine();
+
+        Console.Write("Inserisci la data e l'ora dell'evento (gg/mm/aaaa hh:mm) -> ");
+        string date = Console.ReadLine();
+
+        string speaker = "";
+        double price = -1;
+
+        if(type == "conference")
+        {
             Console.Write("Inserisci il nome del relatore -> ");
-            string speaker = Console.ReadLine();
+            speaker = Console.ReadLine();
 
             Console.Write("Inserisci il prezzo del biglietto -> ");
-            double price = -1;
             try
             {
                 price = Convert.ToDouble(Console.ReadLine());
-            } catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            Console.Write("Inserisci il numero di posti totali -> ");
-            int maxCapacity = -1;
-            try
-            {
-                maxCapacity = Convert.ToInt32(Console.ReadLine());
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+        }
 
+        Console.Write("Inserisci il numero di posti totali -> ");
+        int maxCapacity = -1;
+        try
+        {
+            maxCapacity = Convert.ToInt32(Console.ReadLine());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
+        if (type == "conference")
+        {
             try
             {
-                newConf = new Conference(title, date, maxCapacity, speaker, price);
-            } catch (Exception e)
+                newEvent = new Conference(title, date, maxCapacity, speaker, price);
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+        } else
+        {
+            try
+            {
+                newEvent = new Event(title, date, maxCapacity);
+            }
+            catch (Exception e)
+            {
+                newEvent = null;
+                Console.WriteLine(e.Message);
+            }
         }
+        return newEvent;
+    }
+
+    public static void SeatsReserver(Event thisEvent)
+    {
         Console.Write("Quanti posti desideri prenotare? -> ");
-        int confReservedSeats = -1;
+        int reservedSeats = -1;
         try
         {
-            confReservedSeats = Convert.ToInt32(Console.ReadLine());
-        } catch (Exception e)
+            reservedSeats = Convert.ToInt32(Console.ReadLine());
+        }
+        catch (Exception e)
         {
             Console.WriteLine(e.Message);
         }
         try
         {
-            newConf.ReserveSeats(confReservedSeats);
+            thisEvent.ReserveSeats(reservedSeats);
         }
         catch (Exception e)
         {
@@ -270,32 +226,37 @@
 
         Console.WriteLine();
 
-        Console.WriteLine($"Numero di posti prenotati -> {newConf.ReservedSeats}");
-        Console.WriteLine($"Numero di posti disponibili -> {newConf.GetAvailableSeats()}");
+        Console.WriteLine($"Numero di posti prenotati -> {thisEvent.ReservedSeats}");
+        Console.WriteLine($"Numero di posti disponibili -> {thisEvent.GetAvailableSeats()}");
+    }
 
-        string anotherAnswer;
+    public static void SeatsUnreserver(Event thisEvent)
+    {
+        string answer;
 
         do
         {
             Console.WriteLine();
 
             Console.Write("Vuoi disdire dei posti (si/no)? -> ");
-            anotherAnswer = Console.ReadLine().Trim().ToLower();
-            if (anotherAnswer.Contains("si"))
+            answer = Console.ReadLine().Trim().ToLower();
+            if (answer.Contains("si"))
             {
                 Console.Write("Ok, inserisci il numero di posti che intendi disdire -> ");
                 int seatsToUnreserve = -1;
                 try
                 {
                     seatsToUnreserve = Convert.ToInt32(Console.ReadLine());
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
                 try
                 {
-                    newConf.UnreserveSeats(seatsToUnreserve);
-                } catch (Exception e)
+                    thisEvent.UnreserveSeats(seatsToUnreserve);
+                }
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
@@ -303,17 +264,15 @@
             else
             {
                 Console.WriteLine();
-                Console.WriteLine($"Ok, ecco un riepilogo dei posti disponibili e dei posti attualmente occupati per {newConf.Title}");
+                Console.WriteLine($"Ok, ecco un riepilogo dei posti disponibili e dei posti attualmente occupati per {thisEvent.Title}");
             }
 
             Console.WriteLine();
 
-            Console.WriteLine($"Numero di posti prenotati -> {newConf.ReservedSeats}");
-            Console.WriteLine($"Numero di posti disponibili -> {newConf.GetAvailableSeats()}");
+            Console.WriteLine($"Numero di posti prenotati -> {thisEvent.ReservedSeats}");
+            Console.WriteLine($"Numero di posti disponibili -> {thisEvent.GetAvailableSeats()}");
 
             Console.WriteLine();
-        } while (anotherAnswer.Contains("si"));
-        newEventsProgram.AddNewEvent(newConf);
-        newEventsProgram.PrintThisEventsList();
+        } while (answer.Contains("si"));
     }
 }
