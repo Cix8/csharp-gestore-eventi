@@ -2,6 +2,29 @@
 
 Event pastEvent = new Event();
 Event testEvent = new Event("test evento", "26-9-2022 12:00", 50);
+Event testEvent1 = new Event("test evento 1", "26-9-2022 15:00", 150);
+Event testEvent2 = new Event("test evento 2", "27-10-2022 18:00", 100);
+
+EventsProgram myProgram = new EventsProgram("programma eventi");
+
+myProgram.AddNewEvent(pastEvent);
+myProgram.AddNewEvent(testEvent);
+myProgram.AddNewEvent(testEvent1);
+myProgram.AddNewEvent(testEvent2);
+
+List<Event> myEvents = myProgram.GetEventsByDate("26/9/2022");
+
+EventsProgram.PrintEventsBy(myEvents);
+
+Console.WriteLine();
+
+int myCount = myProgram.CountEvents();
+
+myProgram.PrintThisEventsList();
+
+myProgram.ResetEventsList();
+
+int myOtherCount = myProgram.CountEvents();
 
 testEvent.ReserveSeats(48);
 
